@@ -2,15 +2,15 @@ name: Create image
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["master"]
   workflow_dispatch:
 
 env:
-  DOCKER_IMAGE: springbootnextjs
-  DOCKER_TAG: client0.2
-  
+  DOCKER_IMAGE: nextjs-kube
+  DOCKER_TAG: 0.1
+
 jobs:
   Docker:
     runs-on: ubuntu-latest
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 22.16
 
       - name: setup git config
         run: |

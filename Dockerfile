@@ -13,7 +13,8 @@ WORKDIR /app
 # package*.json은 'build' 스테이지에서 이미 복사되었습니다.
 # WORKDIR이 동일하므로 해당 파일들이 이미 존재합니다.
 # 전체 소스 코드를 복사하기 전에 의존성을 설치하여 Docker 레이어 캐싱을 활용합니다.
-RUN npm install # 또는 npm ci (빌드에 필요한 모든 의존성 설치)
+# 또는 npm ci (빌드에 필요한 모든 의존성 설치)
+RUN npm install
 COPY . .
 RUN npm run build
 
@@ -35,8 +36,8 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 # node_modules는 위에서 `npm ci --omit=dev`로 설치했습니다.
 # package.json은 'build' 스테이지에서 가져왔습니다.
-# COPY --from=builder /app/node_modules ./node_modules # 이 줄은 필요 없습니다.
-# COPY --from=builder /app/package.json ./package.json # 이 줄은 필요 없습니다.
+# COPY --from=builder /app/node_modules ./node_modules
+# COPY --from=builder /app/package.json ./package.json
 
 USER nextjs
 # 프로덕션 환경에서 포트 노출
