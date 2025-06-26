@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `http://bookmarker-api:8080/api/:path*`,
+        destination: `http://bookmark-api:8080/api/:path*`,
         //'http://bookmarker-api-svc:8080/:path*/' // Proxy to Backend
       },
     ];

@@ -14,7 +14,7 @@ WORKDIR /app
 # WORKDIR이 동일하므로 해당 파일들이 이미 존재합니다.
 # 전체 소스 코드를 복사하기 전에 의존성을 설치하여 Docker 레이어 캐싱을 활용합니다.
 # 또는 npm ci (빌드에 필요한 모든 의존성 설치)
-RUN npm install
+RUN npm ci
 COPY . .
 RUN npm run build
 
@@ -52,7 +52,7 @@ WORKDIR /app # WORKDIR은 상속되지만, 명시적으로 작성하는 것이 �
 ENV NODE_ENV=development
 # 'build' 스테이지에서 package*.json이 복사되었으므로, 여기서 의존성을 설치합니다.
 # 개발에 필요한 모든 의존성 설치
-RUN npm install 
+RUN npm ci
 # 나머지 소스 코드 복사
 COPY . . 
 # 개발 환경에서 포트 노출
