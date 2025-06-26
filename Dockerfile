@@ -1,5 +1,5 @@
 # Stage 1: 기본 Node.js 환경 및 의존성 정의 (스테이지 이름: 'build')
-FROM node:22.16-alpine AS build
+FROM node:20-alpine3.19 AS build
 WORKDIR /app
 COPY package*.json ./
 # 'build' 스테이지에서 EXPOSE는 보통 필요 없지만, 원래 파일에 있어 유지합니다.
@@ -14,7 +14,7 @@ WORKDIR /app
 # WORKDIR이 동일하므로 해당 파일들이 이미 존재합니다.
 # 전체 소스 코드를 복사하기 전에 의존성을 설치하여 Docker 레이어 캐싱을 활용합니다.
 # 또는 npm ci (빌드에 필요한 모든 의존성 설치)
-RUN npm ci
+RUN npm install
 COPY . .
 RUN npm run build
 
@@ -47,14 +47,14 @@ CMD ["npm", "start"]
 
 # Stage 4: 개발 환경 (스테이지 이름: 'dev')
 # 'build' 스테이지를 기반으로 합니다.
-FROM build AS dev
-WORKDIR /app # WORKDIR은 상속되지만, 명시적으로 작성하는 것이 좋습니다.
-ENV NODE_ENV=development
-# 'build' 스테이지에서 package*.json이 복사되었으므로, 여기서 의존성을 설치합니다.
-# 개발에 필요한 모든 의존성 설치
-RUN npm ci
-# 나머지 소스 코드 복사
-COPY . . 
-# 개발 환경에서 포트 노출
-EXPOSE 3000 
-CMD ["npm", "run", "dev"]
+# FROM build AS dev
+# WORKDIR /app # WORKDIR은 상속되지만, 명시적으로 작성하는 것이 좋습니다.
+# ENV NODE_ENV=development
+# # 'build' 스테이지에서 package*.json이 복사되었으므로, 여기서 의존성을 설치합니다.
+# # 개발에 필요한 모든 의존성 설치
+# RUN npm install
+# # 나머지 소스 코드 복사
+# COPY . . 
+# # 개발 환경에서 포트 노출
+# EXPOSE 3000 
+# CMD ["npm", "run", "dev"]
